@@ -1,13 +1,24 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState(false);
+
+  const handleLoginSubmit = (e) => {
+    e.preventDefault();
+
+    //パスワード設定できるようになったら消す
+    setLoginError(false);
+
+    navigate("/top");
+  };
 
   return (
     <>
       <h1>家計簿</h1>
-      <form>
+      <form onSubmit={handleLoginSubmit}>
         <label>
           ユーザー名
           <input name="loginId" placeholder="ログインIDを入力してください" />

@@ -2,8 +2,10 @@
   /*登録クラス*/
 }
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function TransactionForm({ onCreated }) {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     id: 1,
     date: "",
@@ -13,11 +15,9 @@ function TransactionForm({ onCreated }) {
     memo: "",
   });
 
-  const [list, setList] = useState([]);
-
   const updateForm = (e) => {
     const { name, value } = e.target;
-    console.log(`変更された項目：${name},入力値：${value}`);
+
     setForm((prev) => ({
       ...prev,
       [name]: value,
@@ -42,8 +42,9 @@ function TransactionForm({ onCreated }) {
       memo: form.memo,
     };
 
-    setList((prevList) => [...prevList, newTransaction]);
-
+    if (typeof onCreated === "function") {
+      onCreated(newTransaction);
+    }
     setForm({
       id: form.id + 1,
       date: "",
@@ -52,6 +53,8 @@ function TransactionForm({ onCreated }) {
       category: "",
       memo: "",
     });
+
+    navigate("/list");
   };
 
   return (
@@ -112,31 +115,6 @@ function TransactionForm({ onCreated }) {
 
         <button type="submit">送信</button>
       </form>
-
-      <div>
-        <table>
-          <thead>
-            <tr>
-              <th>日付</th>
-              <th>収支</th>
-              <th>金額</th>
-              <th>カテゴリ</th>
-              <th>メモ</th>
-            </tr>
-          </thead>
-          <tbody>
-            {list.map((f) => (
-              <tr key={f.id}>
-                <td>{f.date}</td>
-                <td>{f.incExpe}</td>
-                <td>{f.amount}</td>
-                <td>{f.category}</td>
-                <td>{f.memo}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
     </>
   );
 }
