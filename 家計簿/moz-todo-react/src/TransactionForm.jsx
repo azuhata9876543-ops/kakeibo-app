@@ -7,13 +7,21 @@ import { useNavigate } from "react-router-dom";
 function TransactionForm({ onCreated }) {
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    id: 1,
     date: "",
-    incExpe: "支出",
+    categoryType: "支出",
     amount: "",
     category: "",
+    subCategory: "",
     memo: "",
   });
+
+  const CATEGORYNAME = [
+    "固定費",
+    "食費",
+    "日用品・雑費",
+    "娯楽・交際費",
+    "特別費",
+  ];
 
   const updateForm = (e) => {
     const { name, value } = e.target;
@@ -27,18 +35,18 @@ function TransactionForm({ onCreated }) {
   const handleTypeChange = (type) => {
     setForm((prev) => ({
       ...prev,
-      incExpe: type,
+      categoryType: type,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newTransaction = {
-      id: form.id,
       date: form.date,
-      incExpe: form.incExpe,
+      categoryType: form.categoryType,
       amount: Number(form.amount),
       category: form.category,
+      subCategory: form.subCategory,
       memo: form.memo,
     };
 
@@ -46,14 +54,13 @@ function TransactionForm({ onCreated }) {
       onCreated(newTransaction);
     }
     setForm({
-      id: form.id + 1,
       date: "",
-      incExpe: "支出",
+      categoryType: "支出",
       amount: "",
       category: "",
+      subCategory: "",
       memo: "",
     });
-
     navigate("/list");
   };
 
@@ -72,14 +79,14 @@ function TransactionForm({ onCreated }) {
         <div className="type-buttons">
           <button
             type="button"
-            className={form.incExpe === "収入" ? "active" : ""}
+            className={form.categoryType === "収入" ? "active" : ""}
             onClick={() => handleTypeChange("収入")}
           >
             収入
           </button>
           <button
             type="button"
-            className={form.incExpe === "支出" ? "active" : ""}
+            className={form.categoryType === "支出" ? "active" : ""}
             onClick={() => handleTypeChange("支出")}
           >
             支出
@@ -100,11 +107,23 @@ function TransactionForm({ onCreated }) {
 
         <label>
           カテゴリ
+          <select name="category" value={form.category} onChange={updateForm}>
+            <option value="">カテゴリを選択してください</option>
+            {CATEGORYNAME.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label>
+          サブカテゴリ
           <input
-            name="category"
-            value={form.category}
+            name="subCategory"
+            value={form.subCategory}
             onChange={updateForm}
-            placeholder="区分を入力してください"
+            placeholder="カテゴリを入力してください"
           />
         </label>
 

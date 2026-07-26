@@ -41,6 +41,18 @@ function Header() {
         </Link>
       </>
     );
+  } else if (location.pathname.startsWith("/detail")) {
+    pageTitle = "詳細画面";
+    pageLink = (
+      <>
+        <Link to="/top" className="btn-link">
+          トップページ
+        </Link>
+        <Link to="/list" className="btn-link">
+          リスト
+        </Link>
+      </>
+    );
   }
 
   return (

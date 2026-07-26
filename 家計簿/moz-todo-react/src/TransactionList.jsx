@@ -35,14 +35,14 @@ function TransactionList({ list = [] }) {
           {list.map((l) => (
             <tr key={l.id}>
               <td>{l.date}</td>
-              <td>{l.incExpe}</td>
+              <td>{l.categoryType}</td>
               <td>{l.amount}</td>
               <td>{l.category}</td>
               <td>{l.memo}</td>
               <td>
                 <button
                   type="button"
-                  onClick={() => navigate(`/transaction/${l.id}`)}
+                  onClick={() => navigate(`/detail/${l.id}`)}
                 >
                   詳細
                 </button>
