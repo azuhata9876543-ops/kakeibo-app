@@ -60,7 +60,6 @@ function Balance({ list = [] }) {
             style={{
               width: "100%",
               height: 300,
-              backgroundColor: "#fafafa",
               borderRadius: "8px",
               padding: "10px",
             }}
