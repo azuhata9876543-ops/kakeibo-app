@@ -1,0 +1,29 @@
+### ① 全件取得テスト (GET)
+GET http://localhost:8080/api/transactions
+
+### ② 新規登録テスト (POST)
+POST http://localhost:8080/api/transactions
+Content-Type: application/json
+
+{
+  "amount": 1500,
+  "subCategory": "食費",
+  "date": "2026-07-31",
+  "memo": "ランチ代"
+}
+
+### ③ 更新テスト (PUT)
+# ※末尾の「1」は更新したいデータのIDに合わせて変更してください
+PUT http://localhost:8080/api/transactions/1
+Content-Type: application/json
+
+{
+  "amount": 2000,
+  "subCategory": "食費",
+  "date": "2026-07-31",
+  "memo": "豪華なランチ代"
+}
+
+### ④ 削除テスト (DELETE)
+# ※末尾の「1」は削除したいデータのIDに合わせて変更してください
+DELETE http://localhost:8080/api/transactions/1
