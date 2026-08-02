@@ -18,7 +18,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/transactions")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:5173")
 public class TransactionController {
     private final TransactionService transactionService;
 

@@ -1,6 +1,9 @@
 package com.backend.entity;
 
 import jakarta.persistence.Entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -16,6 +19,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "category")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class EntityCategory {
     
     @Id

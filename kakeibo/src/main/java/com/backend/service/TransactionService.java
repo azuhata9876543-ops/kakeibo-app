@@ -20,7 +20,9 @@ public class TransactionService {
 
     @Transactional
     public EntityTransaction createTransaction(EntityTransaction transaction) {
-        return transactionRepository.save(transaction);
+        EntityTransaction saved = transactionRepository.saveAndFlush(transaction);
+        return transactionRepository.findById(saved.getId())
+                .orElseThrow(() -> new RuntimeException("登録データの取得に失敗しました。"));
     }
 
     @Transactional
@@ -28,10 +30,15 @@ public class TransactionService {
         return transactionRepository.findById(id)
                 .map(item -> {
                     item.setAmount(newtransaction.getAmount());
-                    item.setCategory(newtransaction.getCategory());
+                    
                     item.setDate(newtransaction.getDate());
                     item.setMemo(newtransaction.getMemo());
-                    return transactionRepository.save(item);
+                    var newCategory = newtransaction.getCategory();
+                    if (newCategory != null) {
+                        newCategory.setSubCategory(newCategory.getSubCategory());
+                    }
+                    item.setCategory(newCategory);
+                    return transactionRepository.saveAndFlush(item);
                 })
                 .orElseThrow(() -> new RuntimeException("指定された取引(ID: " + id + ")は見つかりませんでした。"));
     }
