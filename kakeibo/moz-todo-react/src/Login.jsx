@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const API_URL = "http://localhost:8080/api/auth/login";
 
-function Login() {
+function Login({ onLoginSuccess }) {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState(false);
@@ -37,7 +37,10 @@ function Login() {
 
       if (res.ok) {
         localStorage.setItem("userId", credentials.id);
-        navigate("/top");
+        if (typeof onLoginSuccess === "function") {
+          onLoginSuccess(credentials.id);
+          navigate("/top");
+        }
       } else {
         setLoginError(true);
       }
