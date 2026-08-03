@@ -1,3 +1,5 @@
+INSERT INTO users(id, password) VALUES('user1', 'password')
+
 INSERT INTO category(category_type, category) VALUES('INCOME', '給与')
 INSERT INTO category(category_type, category) VALUES('INCOME', '副収入')
 

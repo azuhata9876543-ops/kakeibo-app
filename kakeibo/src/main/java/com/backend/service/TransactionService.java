@@ -14,8 +14,9 @@ public class TransactionService {
         this.transactionRepository = transactionRepository;
     }
 
-    public List<EntityTransaction> getAllTransactions() {
-        return transactionRepository.findAll();
+    // ユーザーIDに基づいてトランザクションを取得するメソッド
+    public List<EntityTransaction> getAllTransactions(String userId) {
+        return transactionRepository.findByUserId(userId);
     }
 
     @Transactional

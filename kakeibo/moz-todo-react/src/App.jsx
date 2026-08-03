@@ -6,6 +6,7 @@ import TransactionForm from "./TransactionForm.jsx";
 import TransactionList from "./TransactionList.jsx";
 import TransactionDetail from "./TransactionDetail.jsx";
 import Balance from "./Balance.jsx";
+import ProtectedRoute from "./ProtectedRoute.jsx";
 import "./App.css";
 
 const API_URL = "http://localhost:8080/api/transactions";
@@ -14,10 +15,14 @@ function App() {
   const [transactions, setTransactions] = useState([]);
   const navigate = useNavigate();
 
+  // データの取得
   useEffect(() => {
     const loadData = async () => {
+      const userId = localStorage.getItem("userId");
+      if (!userId) return;
+
       try {
-        const res = await fetch(API_URL);
+        const res = await fetch(`${API_URL}?userId=${userId}`);
         if (!res.ok) throw new Error("データの取得に失敗しました");
         setTransactions(await res.json());
       } catch (err) {
@@ -27,12 +32,15 @@ function App() {
     loadData();
   }, []);
 
+  // データの作成
   const handleCreate = async (newTransaction) => {
+    const userId = localStorage.getItem("userId");
+    const transactionWithUser = { ...newTransaction, user: { id: userId } };
     try {
       const res = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newTransaction),
+        body: JSON.stringify(transactionWithUser),
       });
       if (!res.ok) throw new Error("保存に失敗しました");
       const savedTransaction = await res.json();
@@ -108,20 +116,40 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/top" element={<Balance list={transactions} />} />
+        <Route
+          path="/top"
+          element={
+            <ProtectedRoute>
+              <Balance list={transactions} />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/registration"
-          element={<TransactionForm onCreated={handleCreate} />}
+          element={
+            <ProtectedRoute>
+              <TransactionForm onCreated={handleCreate} />
+            </ProtectedRoute>
+          }
         />
-        <Route path="/list" element={<TransactionList list={transactions} />} />
+        <Route
+          path="/list"
+          element={
+            <ProtectedRoute>
+              <TransactionList list={transactions} />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/detail/:id"
           element={
-            <TransactionDetail
-              list={transactions}
-              onUpdate={handleUpdate}
-              onDelete={handleDelete}
-            />
+            <ProtectedRoute>
+              <TransactionDetail
+                list={transactions}
+                onUpdate={handleUpdate}
+                onDelete={handleDelete}
+              />
+            </ProtectedRoute>
           }
         />
       </Routes>

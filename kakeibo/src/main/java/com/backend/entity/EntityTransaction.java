@@ -40,6 +40,11 @@ public class EntityTransaction {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private EntityCategory category;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private EntityUser user;
+
     public EntityTransaction() {
     }
 }

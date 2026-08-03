@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import {
   PieChart,
   Pie,
@@ -103,9 +102,15 @@ function Balance({ list = [] }) {
         </div>
       </div>
 
-      <Link to="/" className="btn-link danger">
+      <button
+        onClick={() => {
+          localStorage.removeItem("userId");
+          window.location.href = "/";
+        }}
+        className="logout-button"
+      >
         ログアウト
-      </Link>
+      </button>
     </div>
   );
 }

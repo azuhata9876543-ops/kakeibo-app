@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import com.backend.service.TransactionService;
@@ -26,9 +27,10 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
+    // ユーザーIDに基づいてトランザクションを取得するエンドポイント
     @GetMapping("")
-    public List<EntityTransaction> getAll(){
-        return transactionService.getAllTransactions();
+    public List<EntityTransaction> getAll(@RequestParam(name = "userId") String userId) {
+        return transactionService.getAllTransactions(userId);
     }
 
     @PostMapping("")
