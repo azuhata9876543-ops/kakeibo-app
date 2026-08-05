@@ -13,36 +13,24 @@ const API_URL = "http://localhost:8080/api/transactions";
 
 function App() {
   const [transactions, setTransactions] = useState([]);
-  const [currentUserId, setCurrentUserId] = useState(
-    localStorage.getItem("userId"),
-  );
   const navigate = useNavigate();
 
-  // データの読み込み
-  const loadData = async (userId) => {
-    const idToFetch = userId || localStorage.getItem("userId");
-    if (!idToFetch) {
-      setTransactions([]);
-      return;
-    }
-
-    try {
-      const res = await fetch(`${API_URL}?userId=${idToFetch}`);
-      if (!res.ok) throw new Error("データの取得に失敗しました");
-      const data = await res.json();
-      setTransactions(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  // 初回起動時の読み込み
+  // データの取得
   useEffect(() => {
-    const fetchData = async () => {
-      await loadData(currentUserId);
+    const loadData = async () => {
+      const userId = localStorage.getItem("userId");
+      if (!userId) return;
+
+      try {
+        const res = await fetch(`${API_URL}?userId=${userId}`);
+        if (!res.ok) throw new Error("データの取得に失敗しました");
+        setTransactions(await res.json());
+      } catch (err) {
+        console.log(err);
+      }
     };
-    fetchData();
-  }, [currentUserId]);
+    loadData();
+  }, []);
 
   // データの作成
   const handleCreate = async (newTransaction) => {
@@ -127,16 +115,7 @@ function App() {
       <Header />
 
       <Routes>
-        <Route
-          path="/"
-          element={
-            <Login
-              onLoginSuccess={(id) => {
-                setCurrentUserId(id);
-              }}
-            />
-          }
-        />
+        <Route path="/" element={<Login />} />
         <Route
           path="/top"
           element={
