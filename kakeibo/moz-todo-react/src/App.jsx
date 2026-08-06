@@ -51,7 +51,6 @@ function App() {
           id: savedTransaction.category ? savedTransaction.category.id : null,
           type: newTransaction.categoryType,
           category: newTransaction.categoryName,
-          subCategory: newTransaction.subCategory,
         },
       };
 
@@ -81,9 +80,6 @@ function App() {
           id: savedItem.category ? updateItem.category.id : null,
           type: updateItem.categoryType,
           category: updateItem.categoryName,
-          subCategory: updateItem.category
-            ? updateItem.category.subCategory
-            : "",
         },
       };
       setTransactions((prev) =>

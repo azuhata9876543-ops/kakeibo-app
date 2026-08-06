@@ -43,6 +43,8 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
     date: "",
     amount: "",
     category: "",
+    item: "",
+    memo: "",
   });
 
   const [isEdit, setIsEdit] = useState(null);
@@ -56,7 +58,7 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
         : "EXPENSE",
       amount: transaction.amount,
       category: transaction.category ? transaction.category.category : "",
-      subCategory: transaction.subCategory || "",
+      item: transaction.item || "",
       memo: transaction.memo,
     };
   });
@@ -87,10 +89,22 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
 
   const handleSave = () => {
     if (onUpdate) {
-      setErrors({ date: "", amount: "", category: "" });
+      setErrors({
+        date: "",
+        amount: "",
+        category: "",
+        item: "",
+        memo: "",
+      });
 
       let hasError = false;
-      const newErrors = { data: "", amount: "", category: "" };
+      const newErrors = {
+        date: "",
+        amount: "",
+        category: "",
+        item: "",
+        memo: "",
+      };
 
       if (!editForm.date) {
         newErrors.date = "日付を入力してください。";
@@ -107,6 +121,16 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
         hasError = true;
       }
 
+      if (editForm.item && editForm.item.length > 20) {
+        newErrors.item = "品目は20字以内で入力してください。";
+        hasError = true;
+      }
+
+      if (editForm.memo && editForm.memo.length > 40) {
+        newErrors.memo = "メモは40字以内で入力してください。";
+        hasError = true;
+      }
+
       if (hasError) {
         setErrors(newErrors);
         return;
@@ -117,7 +141,7 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
         id: editForm.id,
         date: editForm.date,
         memo: editForm.memo,
-        subCategory: editForm.subCategory,
+        item: editForm.item,
         amount: Number(editForm.amount),
         category: selectedId
           ? {
@@ -135,7 +159,7 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
         amount: Number(editForm.amount),
         category: editForm.category,
         categoryType: editForm.categoryType,
-        subCategory: editForm.subCategory,
+        item: editForm.item,
       });
     }
     setIsEdit(null);
@@ -161,8 +185,8 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
       displayValue = editForm.category ? editForm.category : "未入力";
     }
 
-    if (fieldName === "subCategory") {
-      displayValue = editForm.subCategory || "未入力";
+    if (fieldName === "item") {
+      displayValue = editForm.item || "未入力";
     }
 
     return (
@@ -237,7 +261,7 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
       {renderRow("収支", "categoryType")}
       {renderRow("金額", "amount", "number")}
       {renderRow("カテゴリ", "category")}
-      {renderRow("サブカテゴリ", "subCategory")}
+      {renderRow("品目", "item")}
       {renderRow("メモ", "memo")}
       <button
         className="delete"

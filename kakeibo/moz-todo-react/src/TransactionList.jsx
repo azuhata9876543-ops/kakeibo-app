@@ -27,6 +27,7 @@ function TransactionList({ list = [] }) {
             <th>収支</th>
             <th>金額</th>
             <th>カテゴリ</th>
+            <th>品目</th>
             <th>メモ</th>
             <th></th>
           </tr>
@@ -44,7 +45,7 @@ function TransactionList({ list = [] }) {
               </td>
               <td>{l.amount}</td>
               <td>{l.category ? l.category.category : "未分類"}</td>
-              <td>{l.subCategory}</td>
+              <td>{l.item}</td>
               <td>{l.memo}</td>
               <td>
                 <button

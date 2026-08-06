@@ -33,7 +33,7 @@ public class TransactionService {
                 .map(item -> {
                     item.setAmount(newTransaction.getAmount());                    
                     item.setDate(newTransaction.getDate());
-                    item.setSubCategory(newTransaction.getSubCategory());
+                    item.setItem(newTransaction.getItem());
                     item.setMemo(newTransaction.getMemo());
                     var newCategory = newTransaction.getCategory();
                     if (newCategory != null) {

@@ -41,7 +41,7 @@ public class EntityTransaction {
     private EntityCategory category;
 
     @Size(max = 20, message = "入力は20文字以内です。")
-    private String subCategory;
+    private String item;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

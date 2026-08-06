@@ -39,7 +39,7 @@ function TransactionForm({ onCreated }) {
     categoryType: "EXPENSE",
     amount: "",
     category: "",
-    subCategory: "",
+    item: "",
     memo: "",
   });
 
@@ -47,6 +47,8 @@ function TransactionForm({ onCreated }) {
     date: "",
     amount: "",
     category: "",
+    item: "",
+    memo: "",
   });
 
   const updateForm = (e) => {
@@ -72,7 +74,13 @@ function TransactionForm({ onCreated }) {
     const selectedId = categoryMap[form.category] || null;
 
     let hasError = false;
-    const newError = { date: "", amount: "", category: "" };
+    const newError = {
+      date: "",
+      amount: "",
+      category: "",
+      item: "",
+      memo: "",
+    };
 
     if (!form.date) {
       newError.date = "日付を入力してください。";
@@ -80,12 +88,22 @@ function TransactionForm({ onCreated }) {
     }
 
     if (!form.amount || Number(form.amount) <= 0) {
-      newError.amount = "金額は１円以上を入力してください。";
+      newError.amount = "金額は1円以上を入力してください。";
       hasError = true;
     }
 
     if (!form.category || form.category === "未入力") {
       newError.category = "カテゴリを選択してください。";
+      hasError = true;
+    }
+
+    if (form.item && form.item.length > 20) {
+      newError.item = "品目は20字以内で入力してください。";
+      hasError = true;
+    }
+
+    if (form.memo && form.memo.length > 40) {
+      newError.memo = "メモは40字以内で入力してください。";
       hasError = true;
     }
 
@@ -97,7 +115,7 @@ function TransactionForm({ onCreated }) {
       date: form.date,
       amount: Number(form.amount),
       memo: form.memo,
-      subCategory: form.subCategory,
+      item: form.item,
       category: selectedId ? { id: selectedId } : null,
       categoryName: form.category,
       categoryType: form.categoryType,
@@ -111,7 +129,7 @@ function TransactionForm({ onCreated }) {
       categoryType: "EXPENSE",
       amount: "",
       category: "",
-      subCategory: "",
+      item: "",
       memo: "",
     });
   };
@@ -170,16 +188,18 @@ function TransactionForm({ onCreated }) {
           </select>
         </label>
 
+        {errors.item && <p style={{ color: "red" }}>{errors.item}</p>}
         <label>
           サブカテゴリ
           <input
-            name="subCategory"
-            value={form.subCategory}
+            name="item"
+            value={form.item}
             onChange={updateForm}
             placeholder="カテゴリを入力してください"
           />
         </label>
 
+        {errors.memo && <p style={{ color: "red" }}>{errors.memo}</p>}
         <label>
           メモ
           <input name="memo" value={form.memo} onChange={updateForm} />
