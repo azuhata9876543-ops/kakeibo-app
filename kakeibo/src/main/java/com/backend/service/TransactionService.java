@@ -21,24 +21,26 @@ public class TransactionService {
 
     @Transactional
     public EntityTransaction createTransaction(EntityTransaction transaction) {
+        
         EntityTransaction saved = transactionRepository.saveAndFlush(transaction);
         return transactionRepository.findById(saved.getId())
                 .orElseThrow(() -> new RuntimeException("登録データの取得に失敗しました。"));
     }
 
     @Transactional
-    public EntityTransaction updateTransaction(Long id, EntityTransaction newtransaction) {
+    public EntityTransaction updateTransaction(Long id, EntityTransaction newTransaction) {
         return transactionRepository.findById(id)
                 .map(item -> {
-                    item.setAmount(newtransaction.getAmount());
-                    
-                    item.setDate(newtransaction.getDate());
-                    item.setMemo(newtransaction.getMemo());
-                    var newCategory = newtransaction.getCategory();
+                    item.setAmount(newTransaction.getAmount());                    
+                    item.setDate(newTransaction.getDate());
+                    item.setSubCategory(newTransaction.getSubCategory());
+                    item.setMemo(newTransaction.getMemo());
+                    var newCategory = newTransaction.getCategory();
                     if (newCategory != null) {
-                        newCategory.setSubCategory(newCategory.getSubCategory());
+                        item.setCategory(newCategory);
+                    } else {
+                    item.setCategory(null);
                     }
-                    item.setCategory(newCategory);
                     return transactionRepository.saveAndFlush(item);
                 })
                 .orElseThrow(() -> new RuntimeException("指定された取引(ID: " + id + ")は見つかりませんでした。"));

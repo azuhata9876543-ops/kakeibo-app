@@ -39,6 +39,12 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
 
   const navigate = useNavigate();
 
+  const [errors, setErrors] = useState({
+    date: "",
+    amount: "",
+    category: "",
+  });
+
   const [isEdit, setIsEdit] = useState(null);
   const [editForm, setEditForm] = useState(() => {
     if (!transaction) return {};
@@ -50,9 +56,7 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
         : "EXPENSE",
       amount: transaction.amount,
       category: transaction.category ? transaction.category.category : "",
-      subCategory: transaction.category
-        ? transaction.category.subCategory || ""
-        : "",
+      subCategory: transaction.subCategory || "",
       memo: transaction.memo,
     };
   });
@@ -83,19 +87,43 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
 
   const handleSave = () => {
     if (onUpdate) {
+      setErrors({ date: "", amount: "", category: "" });
+
+      let hasError = false;
+      const newErrors = { data: "", amount: "", category: "" };
+
+      if (!editForm.date) {
+        newErrors.date = "日付を入力してください。";
+        hasError = true;
+      }
+
+      if (!editForm.amount || Number(editForm.amount) <= 0) {
+        newErrors.amount = "金額は１円以上を入力してください。";
+        hasError = true;
+      }
+
+      if (!editForm.category || editForm.category === "未入力") {
+        newErrors.category = "カテゴリを選択してください。";
+        hasError = true;
+      }
+
+      if (hasError) {
+        setErrors(newErrors);
+        return;
+      }
+
       const selectedId = CATEGORYMAP[editForm.category] || null;
       const updateData = {
         id: editForm.id,
         date: editForm.date,
-
         memo: editForm.memo,
+        subCategory: editForm.subCategory,
         amount: Number(editForm.amount),
         category: selectedId
           ? {
               id: selectedId,
               type: editForm.categoryType,
               category: editForm.category,
-              subCategory: editForm.subCategory,
             }
           : null,
         categoryName: editForm.category,
@@ -130,7 +158,7 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
       displayValue = editForm.categoryType === "INCOME" ? "収入" : "支出";
     }
     if (fieldName === "category") {
-      displayValue = editForm.category ? editForm.category : "未分類";
+      displayValue = editForm.category ? editForm.category : "未入力";
     }
 
     if (fieldName === "subCategory") {
@@ -139,6 +167,9 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
 
     return (
       <div>
+        {isFieldEdit && errors[fieldName] && (
+          <p style={{ color: "red" }}> {errors[fieldName]} </p>
+        )}
         <strong>{label}:</strong>
         {isFieldEdit ? (
           <>

@@ -43,6 +43,12 @@ function TransactionForm({ onCreated }) {
     memo: "",
   });
 
+  const [errors, setErrors] = useState({
+    date: "",
+    amount: "",
+    category: "",
+  });
+
   const updateForm = (e) => {
     const { name, value } = e.target;
 
@@ -65,13 +71,34 @@ function TransactionForm({ onCreated }) {
 
     const selectedId = categoryMap[form.category] || null;
 
+    let hasError = false;
+    const newError = { date: "", amount: "", category: "" };
+
+    if (!form.date) {
+      newError.date = "日付を入力してください。";
+      hasError = true;
+    }
+
+    if (!form.amount || Number(form.amount) <= 0) {
+      newError.amount = "金額は１円以上を入力してください。";
+      hasError = true;
+    }
+
+    if (!form.category || form.category === "未入力") {
+      newError.category = "カテゴリを選択してください。";
+      hasError = true;
+    }
+
+    if (hasError) {
+      setErrors(newError);
+      return;
+    }
     const newTransaction = {
       date: form.date,
       amount: Number(form.amount),
       memo: form.memo,
-      category: selectedId
-        ? { id: selectedId, subCategory: form.subCategory }
-        : null,
+      subCategory: form.subCategory,
+      category: selectedId ? { id: selectedId } : null,
       categoryName: form.category,
       categoryType: form.categoryType,
     };
@@ -92,13 +119,13 @@ function TransactionForm({ onCreated }) {
   return (
     <>
       <form className="form" onSubmit={handleSubmit}>
+        {errors.date && <p style={{ color: "red" }}>{errors.date}</p>}
         <label>日付を選択してください</label>
         <input
           type="date"
           name="date"
           value={form.date}
           onChange={updateForm}
-          required
         />
 
         <div className="type-buttons">
@@ -118,6 +145,7 @@ function TransactionForm({ onCreated }) {
           </button>
         </div>
 
+        {errors.amount && <p style={{ color: "red" }}>{errors.amount}</p>}
         <label>
           金額入力
           <input
@@ -126,10 +154,10 @@ function TransactionForm({ onCreated }) {
             value={form.amount}
             onChange={updateForm}
             placeholder="金額を入力してください"
-            required
           />
         </label>
 
+        {errors.category && <p style={{ color: "red" }}>{errors.category}</p>}
         <label>
           カテゴリ
           <select name="category" value={form.category} onChange={updateForm}>

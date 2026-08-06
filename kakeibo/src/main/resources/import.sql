@@ -1,4 +1,4 @@
-INSERT INTO users(id, password) VALUES('user1', 'password')
+INSERT INTO users(id, password) VALUES('user1', '$2y$10$gqbQwgG3RfdbNUigYu04Guw3ksbWL3yo0ZNBQcJvqvvcwsJpO1NM.')
 
 INSERT INTO category(category_type, category) VALUES('INCOME', '給与')
 INSERT INTO category(category_type, category) VALUES('INCOME', '副収入')

@@ -48,9 +48,10 @@ function App() {
       const completeData = {
         ...savedTransaction,
         category: {
-          ...savedTransaction.category,
-          category: newTransaction.categoryName,
+          id: savedTransaction.category ? savedTransaction.category.id : null,
           type: newTransaction.categoryType,
+          category: newTransaction.categoryName,
+          subCategory: newTransaction.subCategory,
         },
       };
 

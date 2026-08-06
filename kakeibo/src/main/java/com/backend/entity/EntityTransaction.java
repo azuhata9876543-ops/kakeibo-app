@@ -40,6 +40,9 @@ public class EntityTransaction {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private EntityCategory category;
 
+    @Size(max = 20, message = "入力は20文字以内です。")
+    private String subCategory;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
