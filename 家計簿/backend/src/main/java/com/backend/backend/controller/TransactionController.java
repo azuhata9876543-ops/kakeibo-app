@@ -1,5 +1,7 @@
-package com.backend.backend;
+package com.backend.backend.controller;
 
+import com.backend.backend.entity.EntityTransaction;
+import com.backend.backend.repository.TransactionRepository;
 import java.util.List;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,15 +13,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
 
 
 @RestController
 @RequestMapping("/api/transactions")
 @CrossOrigin(origins = "http://localhost:3000")
-public class Controller {
+public class TransactionController {
 
     @Autowired
-    private Repository repository;
+    private TransactionRepository repository;
 
     @GetMapping
     public List<EntityTransaction>getAll() {
@@ -27,20 +30,18 @@ public class Controller {
     }
 
     @PostMapping
-    public EntityTransaction create(@RequestBody EntityTransaction transaction) {
+    public EntityTransaction create(@Valid @RequestBody EntityTransaction transaction) {
         return repository.save(transaction);
     }
 
     @PutMapping("/{id}")
-    public EntityTransaction update(@PathVariable Long id, @RequestBody EntityTransaction updateItem) {
+    public EntityTransaction update(@PathVariable Long id,  @Valid @RequestBody EntityTransaction updateItem) {
         return repository.findById(id)
             .map(item -> {
                 item.setDate(updateItem.getDate());
                 item.setAmount(updateItem.getAmount());
                 item.setMemo(updateItem.getMemo());
-                item.setCategoryType(updateItem.getCategoryType());
                 item.setCategory(updateItem.getCategory());
-                item.setSubcategory(updateItem.getSubcategory());
                 return repository.save(item);
             })
             .orElseThrow(() -> new RuntimeException("見つかりませんでした"));

@@ -11,7 +11,7 @@ import "./App.css";
 const API_URL = "http://localhost:8080/api/transactions";
 
 function App() {
-  const [transactions, setTransactions] = useState();
+  const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -48,7 +48,7 @@ function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updateItem),
       });
-      if (!res) throw new Error("変更に失敗しました");
+      if (!res.ok) throw new Error("変更に失敗しました");
       const savedItem = await res.json();
       setTransactions((prev) =>
         prev.map((item) => (item.id === savedItem.id ? savedItem : item)),
@@ -64,12 +64,16 @@ function App() {
         method: "DELETE",
       });
 
-      if (!res) throw new Error("削除に失敗しました");
+      if (!res.ok) throw new Error("削除に失敗しました");
       setTransactions((prev) => prev.filter((item) => item.id !== id));
     } catch (err) {
       console.log(err);
     }
   };
+
+  if (!transactions) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
