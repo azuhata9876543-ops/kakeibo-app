@@ -47,70 +47,68 @@ function Balance({ list = [] }) {
   ];
 
   return (
-    <div>
-      <div>
-        {charData.length === 0 ? (
-          <p>支出データがないため、グラフを表示できません。</p>
-        ) : (
-          <div
-            style={{
-              width: "100%",
-              height: 300,
-              borderRadius: "8px",
-              padding: "10px",
-            }}
-          >
-            <ResponsiveContainer>
-              <PieChart>
-                <Pie
-                  data={charData}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={80}
-                  label={({ name, percent }) =>
-                    `${name} (${(percent * 100).toFixed(0)}%)`
-                  }
-                >
-                  {charData.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip formatter={(value) => `${value.toLocaleString()}円`} />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
+    <div className="card">
+      <div className="total-balance">
+        <div className="pie">
+          {charData.length === 0 ? (
+            <p className="is-negative">
+              支出データがないため、グラフを表示できません。
+            </p>
+          ) : (
+            <div
+              style={{
+                width: "100%",
+                height: "300px",
+                borderRadius: "8px",
+                padding: "10px",
+              }}
+            >
+              <ResponsiveContainer>
+                <PieChart>
+                  <Pie
+                    data={charData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={80}
+                    label={({ name, percent }) =>
+                      `${name} (${(percent * 100).toFixed(0)}%)`
+                    }
+                  >
+                    {charData.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    formatter={(value) => `${value.toLocaleString()}円`}
+                  />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          )}
+        </div>
+        <div className="balance">
+          <div className="total">
+            <h2>総収入</h2>
+            <p>{totalIncome.toLocaleString()}円</p>
           </div>
-        )}
-      </div>
-      <div>
-        <div>
-          <h3>総収入</h3>
-          <p>{totalIncome.toLocaleString()}円</p>
-        </div>
-        <div>
-          <h3>総支出</h3>
-          <p>{totalExpense.toLocaleString()}円</p>
-        </div>
-        <div>
-          <h3>現在の残高</h3>
-          <p>{totalBalance.toLocaleString()}円</p>
+          <div className="total">
+            <h2>総支出</h2>
+            <p>{totalExpense.toLocaleString()}円</p>
+          </div>
+          <div className="total">
+            <h2>現在の残高</h2>
+            <p className={totalBalance < 0 ? "is-negative" : ""}>
+              {totalBalance.toLocaleString()}円
+            </p>
+          </div>
         </div>
       </div>
-
-      <button
-        onClick={() => {
-          localStorage.removeItem("userId");
-          window.location.href = "/";
-        }}
-        className="logout-button"
-      >
-        ログアウト
-      </button>
     </div>
   );
 }

@@ -135,79 +135,101 @@ function TransactionForm({ onCreated }) {
   };
 
   return (
-    <>
+    <div className="card">
       <form className="form" onSubmit={handleSubmit}>
-        {errors.date && <p style={{ color: "red" }}>{errors.date}</p>}
-        <label>日付を選択してください</label>
-        <input
-          type="date"
-          name="date"
-          value={form.date}
-          onChange={updateForm}
-        />
+        <div className="left">
+          {errors.date && <p className="is-negative">{errors.date}</p>}
+          <label>
+            日付
+            <input
+              type="date"
+              name="date"
+              value={form.date}
+              onChange={updateForm}
+              className={form.date ? "has-value" : "is-empty"}
+            />
+          </label>
 
-        <div className="type-buttons">
-          <button
-            type="button"
-            className={form.categoryType === "INCOME" ? "active" : ""}
-            onClick={() => handleTypeChange("INCOME")}
-          >
-            収入
-          </button>
-          <button
-            type="button"
-            className={form.categoryType === "EXPENSE" ? "active" : ""}
-            onClick={() => handleTypeChange("EXPENSE")}
-          >
-            支出
-          </button>
+          <label>
+            収支
+            <div className="type-buttons">
+              <button
+                type="button"
+                className={`btn ${form.categoryType === "INCOME" ? "active" : ""}`}
+                onClick={() => handleTypeChange("INCOME")}
+              >
+                収入
+              </button>
+              <button
+                type="button"
+                className={`btn ${form.categoryType === "EXPENSE" ? "active" : ""}`}
+                onClick={() => handleTypeChange("EXPENSE")}
+              >
+                支出
+              </button>
+            </div>
+          </label>
+
+          {errors.category && <p className="is-negative">{errors.category}</p>}
+          <label>
+            カテゴリ
+            <select
+              name="category"
+              value={form.category}
+              onChange={updateForm}
+              className={form.category ? "has-value" : ""}
+            >
+              <option value="">カテゴリを選択してください</option>
+              {CATEGORYNAME[form.categoryType].map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
 
-        {errors.amount && <p style={{ color: "red" }}>{errors.amount}</p>}
-        <label>
-          金額入力
-          <input
-            type="number"
-            name="amount"
-            value={form.amount}
-            onChange={updateForm}
-            placeholder="金額を入力してください"
-          />
-        </label>
+        <div className="right">
+          {errors.amount && <p className="is-negative">{errors.amount}</p>}
+          <label>
+            金額入力
+            <input
+              type="number"
+              name="amount"
+              value={form.amount}
+              onChange={updateForm}
+              placeholder="金額を入力してください"
+            />
+          </label>
 
-        {errors.category && <p style={{ color: "red" }}>{errors.category}</p>}
-        <label>
-          カテゴリ
-          <select name="category" value={form.category} onChange={updateForm}>
-            <option value="">カテゴリを選択してください</option>
-            {CATEGORYNAME[form.categoryType].map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
-        </label>
+          {errors.item && <p className="is-negative">{errors.item}</p>}
+          <label>
+            サブカテゴリ
+            <input
+              name="item"
+              value={form.item}
+              onChange={updateForm}
+              placeholder="カテゴリを入力してください"
+            />
+          </label>
 
-        {errors.item && <p style={{ color: "red" }}>{errors.item}</p>}
-        <label>
-          サブカテゴリ
-          <input
-            name="item"
-            value={form.item}
-            onChange={updateForm}
-            placeholder="カテゴリを入力してください"
-          />
-        </label>
+          {errors.memo && <p className="is-negative">{errors.memo}</p>}
+          <label>
+            メモ
+            <input
+              name="memo"
+              value={form.memo}
+              onChange={updateForm}
+              placeholder="メモを入力してください"
+            />
+          </label>
+        </div>
 
-        {errors.memo && <p style={{ color: "red" }}>{errors.memo}</p>}
-        <label>
-          メモ
-          <input name="memo" value={form.memo} onChange={updateForm} />
-        </label>
-
-        <button type="submit">送信</button>
+        <button className="btn submit" type="submit">
+          送信
+        </button>
       </form>
-    </>
+    </div>
   );
 }
 export default TransactionForm;

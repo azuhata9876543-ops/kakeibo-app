@@ -48,42 +48,51 @@ function Login() {
   };
 
   return (
-    <>
-      <h1>家計簿</h1>
-      <form onSubmit={handleLoginSubmit}>
-        {loginError && (
-          <p style={{ color: "red" }}>
-            ログインに失敗しました。IDまたはパスワードが正しくありません。
-          </p>
-        )}
+    <div className="card">
+      <div className="login-form">
+        <h1>家計簿</h1>
+        <form onSubmit={handleLoginSubmit}>
+          {loginError && (
+            <p className="is-negative">
+              ログインに失敗しました。
+              <br />
+              IDまたはパスワードが正しくありません。
+            </p>
+          )}
 
-        <label>
-          ユーザー名
-          <input
-            name="id"
-            value={credentials.id}
-            onChange={handleChange}
-            placeholder="ログインIDを入力してください"
-          />
-        </label>
+          <label>
+            ユーザー名
+            <input
+              name="id"
+              value={credentials.id}
+              onChange={handleChange}
+              placeholder="ログインIDを入力してください"
+            />
+          </label>
 
-        <label>
-          パスワード
-          <input
-            name="password"
-            type={showPassword ? "text" : "password"}
-            value={credentials.password}
-            onChange={handleChange}
-            placeholder="パスワードを入力してください"
-          />
-          <button type="button" onClick={() => setShowPassword(!showPassword)}>
-            {showPassword ? "非表示" : "表示"}
+          <label>
+            パスワード
+            <input
+              name="password"
+              type={showPassword ? "text" : "password"}
+              value={credentials.password}
+              onChange={handleChange}
+              placeholder="パスワードを入力してください"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? "非表示" : "表示"}
+            </button>
+          </label>
+
+          <button className="btn login" type="submit">
+            ログイン
           </button>
-        </label>
-
-        <button type="submit">ログイン</button>
-      </form>
-    </>
+        </form>
+      </div>
+    </div>
   );
 }
 

@@ -3,6 +3,7 @@
 }
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { DialogButton } from "./DialogButton";
 
 const CATEGORYNAME = {
   INCOME: ["給与", "副収入"],
@@ -65,10 +66,10 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
 
   if (!transaction) {
     return (
-      <>
-        <p>該当するデータが見つかりませんでした。</p>
+      <div className="negative">
+        <p className="is-negative">該当するデータが見つかりませんでした。</p>
         <button onClick={() => navigate("/list")}>リストに戻る</button>
-      </>
+      </div>
     );
   }
 
@@ -165,13 +166,11 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
     setIsEdit(null);
   };
 
-  const handleChangeDelete = (id) => {
-    if (window.confirm("本当に削除しますか？")) {
-      if (onDelete) {
-        onDelete(id);
-      }
-      navigate("/list");
+  const handleDelete = () => {
+    if (onDelete) {
+      onDelete(transaction.id);
     }
+    navigate("/list");
   };
 
   const renderRow = (label, fieldName, type = "text") => {
@@ -190,27 +189,25 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
     }
 
     return (
-      <div>
+      <div className="detail-row">
         {isFieldEdit && errors[fieldName] && (
-          <p style={{ color: "red" }}> {errors[fieldName]} </p>
+          <p className="is-negative"> {errors[fieldName]} </p>
         )}
-        <strong>{label}:</strong>
-        {isFieldEdit ? (
-          <>
-            {fieldName === "categoryType" ? (
+        <div className="row-upper">
+          <strong>{label}</strong>
+          {isFieldEdit ? (
+            fieldName === "categoryType" ? (
               <div className="type">
                 <button
                   type="button"
-                  className={editForm.categoryType === "INCOME" ? "active" : ""}
+                  className={`small-btn ${editForm.categoryType === "INCOME" ? "active" : ""}`}
                   onClick={() => handleTypeChange("INCOME")}
                 >
                   収入
                 </button>
                 <button
                   type="button"
-                  className={
-                    editForm.categoryType === "EXPENSE" ? "active" : ""
-                  }
+                  className={`small-btn ${editForm.categoryType === "EXPENSE" ? "active" : ""}`}
                   onClick={() => handleTypeChange("EXPENSE")}
                 >
                   支出
@@ -236,39 +233,53 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
                 value={editForm[fieldName] || ""}
                 onChange={handleChange}
               />
-            )}
-
-            <button onClick={() => handleSave()}>保存</button>
-            <button onClick={() => setIsEdit(null)}>戻る</button>
-          </>
-        ) : (
-          <>
-            <strong>
+            )
+          ) : (
+            <div>
               {""}
               {displayValue}
               {fieldName === "amount" ? "円" : ""}
-            </strong>
-            <button onClick={() => setIsEdit(fieldName)}>編集</button>
-          </>
-        )}
+            </div>
+          )}
+
+          {isFieldEdit ? (
+            <div className="row-lower">
+              <button className="small-btn keep" onClick={() => handleSave()}>
+                保存
+              </button>
+              <button className="small-btn" onClick={() => setIsEdit(null)}>
+                戻る
+              </button>
+            </div>
+          ) : (
+            <button
+              className="small-btn lis"
+              onClick={() => setIsEdit(fieldName)}
+            >
+              編集
+            </button>
+          )}
+        </div>
       </div>
     );
   };
 
   return (
-    <div className="detail">
-      {renderRow("日付", "date", "date")}
-      {renderRow("収支", "categoryType")}
-      {renderRow("金額", "amount", "number")}
-      {renderRow("カテゴリ", "category")}
-      {renderRow("品目", "item")}
-      {renderRow("メモ", "memo")}
-      <button
-        className="delete"
-        onClick={() => handleChangeDelete(transaction.id)}
-      >
-        削除
-      </button>
+    <div className="card">
+      <div className="detail">
+        {renderRow("日付", "date", "date")}
+        {renderRow("収支", "categoryType")}
+        {renderRow("金額", "amount", "number")}
+        {renderRow("カテゴリ", "category")}
+        {renderRow("品目", "item")}
+        {renderRow("メモ", "memo")}
+        <DialogButton
+          buttonText="削除"
+          dialogTitle="本当に削除しますか？"
+          onConfirm={handleDelete}
+          className="btn delete"
+        />
+      </div>
     </div>
   );
 }

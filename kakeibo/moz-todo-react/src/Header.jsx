@@ -1,63 +1,71 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { DialogButton } from "./DialogButton";
 
 function Header() {
+  const navigate = useNavigate();
   const location = useLocation();
 
-  let pageTitle = "ログイン";
-  let pageLink = null;
-  if (location.pathname === "/top") {
-    pageTitle = "トップページ";
-    pageLink = (
-      <>
-        <Link to="/list" className="btn-link">
-          リスト
+  const handleLogout = () => {
+    localStorage.removeItem("userId");
+    navigate("/", { replace: true });
+  };
+
+  const pageConfig = {
+    "/top": {
+      title: "トップページ",
+      links: [
+        { to: "/list", label: "リスト" },
+        { to: "/registration", label: "登録" },
+      ],
+    },
+    "/list": {
+      title: "リスト",
+      links: [
+        { to: "/top", label: "トップページ" },
+        { to: "/registration", label: "登録" },
+      ],
+    },
+    "/registration": {
+      title: "登録",
+      links: [
+        { to: "/top", label: "トップページ" },
+        { to: "/list", label: "リスト" },
+      ],
+    },
+    "/detail": {
+      title: "詳細画面",
+      links: [
+        { to: "/top", label: "トップページ" },
+        { to: "/list", label: "リスト" },
+      ],
+    },
+  };
+
+  const currentPath = location.pathname.startsWith("/detail")
+    ? "/detail"
+    : location.pathname;
+  const config = pageConfig[currentPath];
+
+  const pageTitle = config ? config.title : "ログイン";
+  const pageLink = config ? (
+    <>
+      <DialogButton
+        buttonText="ログアウト"
+        dialogTitle="本当にログアウトしますか？"
+        onConfirm={handleLogout}
+        className="btn logout"
+      />
+      {config.links.map((link) => (
+        <Link key={link.to} to={link.to} className="btn link">
+          {link.label}
         </Link>
-        <Link to="/registration" className="btn-link">
-          登録
-        </Link>
-      </>
-    );
-  } else if (location.pathname === "/list") {
-    pageTitle = "リスト";
-    pageLink = (
-      <>
-        <Link to="/top" className="btn-link">
-          トップページ
-        </Link>
-        <Link to="/registration" className="btn-link">
-          登録
-        </Link>
-      </>
-    );
-  } else if (location.pathname === "/registration") {
-    pageTitle = "登録画面";
-    pageLink = (
-      <>
-        <Link to="/top" className="btn-link">
-          トップページ
-        </Link>
-        <Link to="/list" className="btn-link">
-          リスト
-        </Link>
-      </>
-    );
-  } else if (location.pathname.startsWith("/detail")) {
-    pageTitle = "詳細画面";
-    pageLink = (
-      <>
-        <Link to="/top" className="btn-link">
-          トップページ
-        </Link>
-        <Link to="/list" className="btn-link">
-          リスト
-        </Link>
-      </>
-    );
-  }
+      ))}
+    </>
+  ) : null;
 
   return (
     <header>
-      <h3>{pageTitle}</h3>
+      <h2>{pageTitle}</h2>
       {pageLink}
     </header>
   );
