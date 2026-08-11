@@ -1,5 +1,5 @@
 FROM eclipse-temurin:21-jdk-jammy AS build
-COPY . .
+COPY . ./
 RUN ./mvnw clean package -DskipTests
 
 FROM eclipse-temurin:21-jre-jammy
