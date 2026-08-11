@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const API_URL = "https://kakeibo-app-production-0f4c.up.railway.app";
+const BASE_HOST = "kakeibo-app-production-0f4c.up.railway.app";
+const API_URL = "https://" + BASE_HOST + "/api/auth";
 
 function Login() {
   const navigate = useNavigate();
