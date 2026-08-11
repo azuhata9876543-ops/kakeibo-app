@@ -19,7 +19,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/transactions")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "kakeibo-app-gamma-two.vercel.app")
 public class TransactionController {
     private final TransactionService transactionService;
 
