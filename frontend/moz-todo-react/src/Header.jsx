@@ -1,6 +1,37 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { DialogButton } from "./DialogButton";
 
+const PAGE_CONFIG = {
+  "/top": {
+    title: "トップページ",
+    links: [
+      { to: "/list", label: "リスト" },
+      { to: "/registration", label: "登録" },
+    ],
+  },
+  "/list": {
+    title: "リスト",
+    links: [
+      { to: "/top", label: "トップページ" },
+      { to: "/registration", label: "登録" },
+    ],
+  },
+  "/registration": {
+    title: "登録",
+    links: [
+      { to: "/top", label: "トップページ" },
+      { to: "/list", label: "リスト" },
+    ],
+  },
+  "/detail": {
+    title: "詳細画面",
+    links: [
+      { to: "/top", label: "トップページ" },
+      { to: "/list", label: "リスト" },
+    ],
+  },
+};
+
 function Header() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -10,41 +41,10 @@ function Header() {
     navigate("/", { replace: true });
   };
 
-  const pageConfig = {
-    "/top": {
-      title: "トップページ",
-      links: [
-        { to: "/list", label: "リスト" },
-        { to: "/registration", label: "登録" },
-      ],
-    },
-    "/list": {
-      title: "リスト",
-      links: [
-        { to: "/top", label: "トップページ" },
-        { to: "/registration", label: "登録" },
-      ],
-    },
-    "/registration": {
-      title: "登録",
-      links: [
-        { to: "/top", label: "トップページ" },
-        { to: "/list", label: "リスト" },
-      ],
-    },
-    "/detail": {
-      title: "詳細画面",
-      links: [
-        { to: "/top", label: "トップページ" },
-        { to: "/list", label: "リスト" },
-      ],
-    },
-  };
-
   const currentPath = location.pathname.startsWith("/detail")
     ? "/detail"
     : location.pathname;
-  const config = pageConfig[currentPath];
+  const config = PAGE_CONFIG[currentPath];
 
   const pageTitle = config ? config.title : "ログイン";
   const pageLink = config ? (

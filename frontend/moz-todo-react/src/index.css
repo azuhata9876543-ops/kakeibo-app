@@ -2,10 +2,10 @@
   --text: #131bb0;
   --text-h: #050c42;
   --bg: linear-gradient(20deg, #131bb0 0%, #1575e3 50%, #093bd4 100%);
-  --bg2: linear-gradient(180deg, #1575e3 0%, #131bb0 70%, #093bd4 100%);
+  --bg2: linear-gradient(180deg, #4394f1 0%, #3c43c2 70%, #1d4ad1 100%);
   --border: #c8dcf4;
   --code-bg: #f0f6ff;
-  --accent: #2989ff;
+  --accent: #499bfe;
   --accent-bg: rgba(21, 117, 227, 0.05);
   --accent-border: rgba(19, 27, 176, 0.3);
   --social-bg: rgba(221, 236, 247, 0.6);
@@ -111,6 +111,26 @@ code {
   justify-content: center;
 }
 
+label {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 18px;
+  width: 100%;
+}
+
+form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
 .btn {
   width: 20%;
   padding: 12px 24px;
@@ -120,17 +140,52 @@ code {
   font-size: 16px;
   font-weight: bold;
   color: #fff;
-  box-shadow: var(--shadow);
-  transition: all 0.2s ease;
+  transition: background-color 0.15s ease-in-out;
+  opacity: 1;
   cursor: pointer;
   letter-spacing: 5px;
-  background: var(--bg);
+  background-color: var(--accent);
 }
 
+.small-btn.keep:hover,
 .btn:hover {
-  opacity: 0.85;
-  transform: translateY(-2px);
-  box-shadow: 0 12px 20px #00000026;
+  opacity: 1;
+  background: #2f7ddc;
+}
+
+.small-btn.lis:active,
+.btn:active {
+  background: #2c5c97;
+}
+
+.btn.logout,
+.btn.delete {
+  background-color: #bb4747;
+}
+
+.btn.logout:hover,
+.btn.delete:hover {
+  background-color: #9c3535;
+}
+
+.btn.logout:active,
+.btn.delete:active {
+  background-color: #6e1f1f;
+}
+
+.small-btn {
+  background: #b2b5bf;
+  border: 1px solid var(--text);
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 60px;
+}
+
+.small-btn:hover {
+  background: #787e8f;
 }
 
 .is-negative {

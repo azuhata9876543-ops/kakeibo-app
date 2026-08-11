@@ -4,32 +4,30 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const CATEGORY_MASTER = [
+  { id: 1, type: "INCOME", name: "給与" },
+  { id: 2, type: "INCOME", name: "副収入" },
+  { id: 3, type: "EXPENSE", name: "固定費" },
+  { id: 4, type: "EXPENSE", name: "食費" },
+  { id: 5, type: "EXPENSE", name: "日用品" },
+  { id: 6, type: "EXPENSE", name: "医療" },
+  { id: 7, type: "EXPENSE", name: "装飾" },
+  { id: 8, type: "EXPENSE", name: "車" },
+  { id: 9, type: "EXPENSE", name: "特別費" },
+  { id: 10, type: "EXPENSE", name: "その他" },
+];
+
 const CATEGORYNAME = {
-  INCOME: ["給与", "副収入"],
-  EXPENSE: [
-    "固定費",
-    "食費",
-    "日用品",
-    "医療",
-    "装飾",
-    "車",
-    "特別費",
-    "その他",
-  ],
+  INCOME: CATEGORY_MASTER.filter((c) => c.type === "INCOME").map((c) => c.name),
+  EXPENSE: CATEGORY_MASTER.filter((c) => c.type === "EXPENSE").map(
+    (c) => c.name,
+  ),
 };
 
-const categoryMap = {
-  給与: 1,
-  副収入: 2,
-  固定費: 3,
-  食費: 4,
-  日用品: 5,
-  医療: 6,
-  装飾: 7,
-  車: 8,
-  特別費: 9,
-  その他: 10,
-};
+const categoryMap = CATEGORY_MASTER.reduce((map, item) => {
+  map[item.name] = item.id;
+  return map;
+}, {});
 
 function TransactionForm({ onCreated }) {
   const navigate = useNavigate();
@@ -111,6 +109,9 @@ function TransactionForm({ onCreated }) {
       setErrors(newError);
       return;
     }
+
+    setErrors({ date: "", amount: "", category: "", item: "", memo: "" });
+
     const newTransaction = {
       date: form.date,
       amount: Number(form.amount),
@@ -155,14 +156,14 @@ function TransactionForm({ onCreated }) {
             <div className="type-buttons">
               <button
                 type="button"
-                className={`btn ${form.categoryType === "INCOME" ? "active" : ""}`}
+                className={`btn income ${form.categoryType === "INCOME" ? "active" : ""}`}
                 onClick={() => handleTypeChange("INCOME")}
               >
                 収入
               </button>
               <button
                 type="button"
-                className={`btn ${form.categoryType === "EXPENSE" ? "active" : ""}`}
+                className={`btn expense ${form.categoryType === "EXPENSE" ? "active" : ""}`}
                 onClick={() => handleTypeChange("EXPENSE")}
               >
                 支出
@@ -204,12 +205,13 @@ function TransactionForm({ onCreated }) {
 
           {errors.item && <p className="is-negative">{errors.item}</p>}
           <label>
-            サブカテゴリ
+            品目
             <input
+              type="text"
               name="item"
               value={form.item}
               onChange={updateForm}
-              placeholder="カテゴリを入力してください"
+              placeholder="品目を入力してください"
             />
           </label>
 
@@ -217,6 +219,7 @@ function TransactionForm({ onCreated }) {
           <label>
             メモ
             <input
+              type="text"
               name="memo"
               value={form.memo}
               onChange={updateForm}
@@ -226,7 +229,7 @@ function TransactionForm({ onCreated }) {
         </div>
 
         <button className="btn submit" type="submit">
-          送信
+          登録
         </button>
       </form>
     </div>

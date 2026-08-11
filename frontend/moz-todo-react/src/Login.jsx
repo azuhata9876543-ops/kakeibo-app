@@ -63,6 +63,7 @@ function Login() {
           <label>
             ユーザー名
             <input
+              type="text"
               name="id"
               value={credentials.id}
               onChange={handleChange}

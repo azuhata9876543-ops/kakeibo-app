@@ -5,32 +5,30 @@ import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { DialogButton } from "./DialogButton";
 
+const CATEGORY_MASTER = [
+  { id: 1, type: "INCOME", name: "給与" },
+  { id: 2, type: "INCOME", name: "副収入" },
+  { id: 3, type: "EXPENSE", name: "固定費" },
+  { id: 4, type: "EXPENSE", name: "食費" },
+  { id: 5, type: "EXPENSE", name: "日用品" },
+  { id: 6, type: "EXPENSE", name: "医療" },
+  { id: 7, type: "EXPENSE", name: "装飾" },
+  { id: 8, type: "EXPENSE", name: "車" },
+  { id: 9, type: "EXPENSE", name: "特別費" },
+  { id: 10, type: "EXPENSE", name: "その他" },
+];
+
 const CATEGORYNAME = {
-  INCOME: ["給与", "副収入"],
-  EXPENSE: [
-    "固定費",
-    "食費",
-    "日用品",
-    "医療",
-    "装飾",
-    "車",
-    "特別費",
-    "その他",
-  ],
+  INCOME: CATEGORY_MASTER.filter((c) => c.type === "INCOME").map((c) => c.name),
+  EXPENSE: CATEGORY_MASTER.filter((c) => c.type === "EXPENSE").map(
+    (c) => c.name,
+  ),
 };
 
-const CATEGORYMAP = {
-  給与: 1,
-  副収入: 2,
-  固定費: 3,
-  食費: 4,
-  日用品: 5,
-  医療: 6,
-  装飾: 7,
-  車: 8,
-  特別費: 9,
-  その他: 10,
-};
+const categoryMap = CATEGORY_MASTER.reduce((map, item) => {
+  map[item.name] = item.id;
+  return map;
+}, {});
 
 function TransactionDetail({ list, onUpdate, onDelete }) {
   const { id } = useParams();
@@ -88,81 +86,90 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
     }));
   };
 
-  const handleSave = () => {
-    if (onUpdate) {
-      setErrors({
-        date: "",
-        amount: "",
-        category: "",
-        item: "",
-        memo: "",
-      });
+  const handleCancel = (fieldName) => {
+    setErrors((prev) => ({ ...prev, [fieldName]: "" }));
 
-      let hasError = false;
-      const newErrors = {
-        date: "",
-        amount: "",
-        category: "",
-        item: "",
-        memo: "",
-      };
-
-      if (!editForm.date) {
-        newErrors.date = "日付を入力してください。";
-        hasError = true;
-      }
-
-      if (!editForm.amount || Number(editForm.amount) <= 0) {
-        newErrors.amount = "金額は１円以上を入力してください。";
-        hasError = true;
-      }
-
-      if (!editForm.category || editForm.category === "未入力") {
-        newErrors.category = "カテゴリを選択してください。";
-        hasError = true;
-      }
-
-      if (editForm.item && editForm.item.length > 20) {
-        newErrors.item = "品目は20字以内で入力してください。";
-        hasError = true;
-      }
-
-      if (editForm.memo && editForm.memo.length > 40) {
-        newErrors.memo = "メモは40字以内で入力してください。";
-        hasError = true;
-      }
-
-      if (hasError) {
-        setErrors(newErrors);
-        return;
-      }
-
-      const selectedId = CATEGORYMAP[editForm.category] || null;
-      const updateData = {
-        id: editForm.id,
-        date: editForm.date,
-        memo: editForm.memo,
-        item: editForm.item,
-        amount: Number(editForm.amount),
-        category: selectedId
-          ? {
-              id: selectedId,
-              type: editForm.categoryType,
-              category: editForm.category,
-            }
-          : null,
-        categoryName: editForm.category,
-        categoryType: editForm.categoryType,
-      };
-      onUpdate(updateData);
+    if (transaction) {
       setEditForm({
-        ...editForm,
-        amount: Number(editForm.amount),
-        category: editForm.category,
-        categoryType: editForm.categoryType,
-        item: editForm.item,
+        id: transaction.id,
+        date: transaction.date,
+        categoryType: transaction.category
+          ? transaction.category.type
+          : "EXPENSE",
+        amount: transaction.amount,
+        category: transaction.category ? transaction.category.category : "",
+        item: transaction.item || "",
+        memo: transaction.memo,
       });
     }
+    setIsEdit(null);
+  };
+
+  const handleSave = () => {
+    if (!onUpdate) return;
+
+    let hasError = false;
+    const newErrors = {
+      date: "",
+      amount: "",
+      category: "",
+      item: "",
+      memo: "",
+    };
+
+    if (!editForm.date) {
+      newErrors.date = "日付を入力してください。";
+      hasError = true;
+    }
+    if (!editForm.amount || Number(editForm.amount) <= 0) {
+      newErrors.amount = "金額は１円以上を入力してください。";
+      hasError = true;
+    }
+    if (!editForm.category || editForm.category === "未入力") {
+      newErrors.category = "カテゴリを選択してください。";
+      hasError = true;
+    }
+    if (editForm.item && editForm.item.length > 20) {
+      newErrors.item = "品目は20字以内で入力してください。";
+      hasError = true;
+    }
+    if (editForm.memo && editForm.memo.length > 40) {
+      newErrors.memo = "メモは40字以内で入力してください。";
+      hasError = true;
+    }
+
+    if (hasError) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({ date: "", amount: "", category: "", item: "", memo: "" });
+
+    const selectedId = categoryMap[editForm.category] || null;
+    const updateData = {
+      id: editForm.id,
+      date: editForm.date,
+      memo: editForm.memo,
+      item: editForm.item,
+      amount: Number(editForm.amount),
+      category: selectedId
+        ? {
+            id: selectedId,
+            type: editForm.categoryType,
+            category: editForm.category,
+          }
+        : null,
+      categoryName: editForm.category,
+      categoryType: editForm.categoryType,
+    };
+
+    onUpdate(updateData);
+
+    setEditForm({
+      ...editForm,
+      amount: Number(editForm.amount),
+    });
+
     setIsEdit(null);
   };
 
@@ -175,6 +182,8 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
 
   const renderRow = (label, fieldName, type = "text") => {
     const isFieldEdit = isEdit === fieldName;
+
+    const hasAnyError = Object.values(errors).some((error) => error !== "");
 
     let displayValue = editForm[fieldName];
     if (fieldName === "categoryType") {
@@ -200,14 +209,14 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
               <div className="type">
                 <button
                   type="button"
-                  className={`small-btn ${editForm.categoryType === "INCOME" ? "active" : ""}`}
+                  className={`small-btn income ${editForm.categoryType === "INCOME" ? "active" : ""}`}
                   onClick={() => handleTypeChange("INCOME")}
                 >
                   収入
                 </button>
                 <button
                   type="button"
-                  className={`small-btn ${editForm.categoryType === "EXPENSE" ? "active" : ""}`}
+                  className={`small-btn expense ${editForm.categoryType === "EXPENSE" ? "active" : ""}`}
                   onClick={() => handleTypeChange("EXPENSE")}
                 >
                   支出
@@ -235,8 +244,7 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
               />
             )
           ) : (
-            <div>
-              {""}
+            <div className="text-wrap">
               {displayValue}
               {fieldName === "amount" ? "円" : ""}
             </div>
@@ -247,7 +255,11 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
               <button className="small-btn keep" onClick={() => handleSave()}>
                 保存
               </button>
-              <button className="small-btn" onClick={() => setIsEdit(null)}>
+              <button
+                className="small-btn"
+                onClick={() => handleCancel(fieldName)}
+                disabled={hasAnyError}
+              >
                 戻る
               </button>
             </div>
@@ -255,6 +267,7 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
             <button
               className="small-btn lis"
               onClick={() => setIsEdit(fieldName)}
+              disabled={isEdit !== null}
             >
               編集
             </button>

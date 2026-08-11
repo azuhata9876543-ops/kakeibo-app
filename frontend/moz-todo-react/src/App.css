@@ -7,12 +7,11 @@ header h2 {
 
 .logout {
   float: right;
-  background: #ba3c3c;
 }
 
 .link {
   float: right;
-  background: var(--accent);
+  background-color: var(--accent);
   text-decoration: none;
 }
 
@@ -21,26 +20,6 @@ header h2 {
   margin-bottom: 7px;
   font-size: 70px;
   letter-spacing: 5px;
-}
-
-label {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  font-weight: bold;
-  font-size: 18px;
-  width: 100%;
-}
-
-form {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 40px;
-  max-width: 800px;
-  margin: 0 auto;
 }
 
 .login-form form {
@@ -52,10 +31,10 @@ form {
 .login-form label button {
   position: absolute;
   right: 10px;
-  bottom: 17px;
+  bottom: 19px;
   font-weight: bold;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .login {
@@ -124,6 +103,10 @@ input[type="date"].is-empty {
   margin: 30px 0;
 }
 
+.balance-content {
+  width: 100%;
+}
+
 .left {
   display: flex;
   flex-direction: column;
@@ -151,12 +134,22 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   background: #b2b5bf;
 }
 
-.active:first-child {
+.small-btn.income:hover,
+.income:hover {
+  background: #6cb170;
+}
+
+.income.active {
   background: #2e7d32;
 }
 
-.active:last-child {
-  background: #d32f2f;
+.small-btn.expense:hover,
+.expense:hover {
+  background: #fc9d9d;
+}
+
+.expense.active {
+  background: #bb4747;
 }
 
 .list {
@@ -168,11 +161,47 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .list table {
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
   background-color: #f1f9fb;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.list th:nth-child(1),
+.list td:nth-child(1) {
+  width: 15%;
+}
+/* 日付 */
+.list th:nth-child(2),
+.list td:nth-child(2) {
+  width: 10%;
+}
+/* 収支 */
+.list th:nth-child(3),
+.list td:nth-child(3) {
+  width: 15%;
+}
+/* 金額 */
+.list th:nth-child(4),
+.list td:nth-child(4) {
+  width: 15%;
+}
+/* カテゴリ */
+.list th:nth-child(5),
+.list td:nth-child(5) {
+  width: 20%;
+}
+/* 品目 */
+.list th:nth-child(6),
+.list td:nth-child(6) {
+  width: 15%;
+}
+/* メモ */
+.list th:nth-child(7),
+.list td:nth-child(7) {
+  width: 10%;
 }
 
 .list th {
@@ -198,34 +227,26 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   font-weight: bold;
 }
 
+.cell-wrap {
+  word-break: break-all;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
 .list tbody tr:hover {
   background-color: var(--border);
   transition: background-color 0.2s;
 }
 
-.small-btn {
-  background: #b2b5bf;
-  border: 1px solid var(--text);
-  padding: 6px 14px;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.2s;
-  width: 60px;
-}
-
-.small-btn:hover {
-  background: #787e8f;
-}
-
 .small-btn.lis:hover {
-  background: var(--accent);
+  background-color: var(--accent);
   color: #ffffff;
 }
 
 .small-btn.lis {
-  background: #ffffff;
+  background-color: #ffffff;
   color: var(--text);
+  flex-shrink: 0;
 }
 
 .negative {
@@ -240,6 +261,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   color: #ffffff;
   width: 300px;
   margin: 30px;
+  padding: 20px;
 }
 
 .expense-row td {
@@ -290,7 +312,6 @@ strong {
   width: 100%;
   padding: 12px;
   font-size: 16px;
-  background: #ba3c3c;
 }
 
 .small-btn.keep {
@@ -298,6 +319,17 @@ strong {
   color: #ffffff;
   border: none;
 }
-.small-btn.keep:hover {
-  background: var(--accent);
+
+.small-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.text-wrap {
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+
+.mode-buttons .btn {
+  width: auto;
 }
