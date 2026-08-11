@@ -7,7 +7,7 @@
 
 テスト用に実際に触っていただけるデプロイ先のURLです。
 
-**URL:** [https://あなたのアプリのURL.com](https://あなたのアプリのURL.com)
+**URL:** [https://github.com/azuhata9876543-ops/kakeibo-app.git](https://あなたのアプリのURL.com)
 
 ### テスト用ログインアカウント
 

@@ -12,7 +12,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin:latest
-    container_name: ${backend_pma}
+    container_name: ${PMA_NAME}
     environment:
       PMA_HOST: db
       PMA_USER: ${PMA_USER}
