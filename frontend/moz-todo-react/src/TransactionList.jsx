@@ -41,6 +41,10 @@ function TransactionList({ list = [] }) {
     return true;
   });
 
+  const sortedList = [...filteredList].sort((a, b) => {
+    return b.date.localeCompare(a.date);
+  });
+
   //データが一件もなとき表示
   if (list.length === 0) {
     return (
@@ -127,14 +131,14 @@ function TransactionList({ list = [] }) {
               </tr>
             </thead>
             <tbody>
-              {filteredList.length === 0 ? (
+              {sortedList.length === 0 ? (
                 <tr>
                   <td colSpan="7" className="is-negative">
                     選択された月のデータがありません。
                   </td>
                 </tr>
               ) : (
-                filteredList.map((l, index) => (
+                sortedList.map((l, index) => (
                   <tr
                     key={l.id || `tx-${index}`}
                     className={
