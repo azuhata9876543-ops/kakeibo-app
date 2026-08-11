@@ -9,7 +9,9 @@ import Balance from "./Balance.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
 import "./App.css";
 
-const API_URL = "http://localhost:8080/api/transactions";
+const API_URL = import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL}/api/transactions`
+  : "http://localhost:8080/api/transactions";
 
 function App() {
   const [transactions, setTransactions] = useState([]);
