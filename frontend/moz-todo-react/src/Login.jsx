@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const API_URL = import.meta.env.VITE_API_URL
-  ? `${import.meta.env.VITE_API_URL}/api/transactions`
-  : "http://localhost:8080/api/transactions";
+const API_URL = "https://kakeibo-app-production-0f4c.up.railway.app";
 
 function Login() {
   const navigate = useNavigate();

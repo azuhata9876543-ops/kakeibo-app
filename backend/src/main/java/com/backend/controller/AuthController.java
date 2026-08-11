@@ -16,7 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "kakeibo-app-gamma-two.vercel.app")
+@CrossOrigin(origins = "https://kakeibo-app-gamma-two.vercel.app")
 public class AuthController {
 
     private final UserRepository userRepository;
