@@ -76,12 +76,14 @@ function App() {
       const savedItem = await res.json();
 
       const completeData = {
-        ...savedItem,
-        category: {
-          id: savedItem.category ? updateItem.category.id : null,
-          type: updateItem.categoryType,
-          category: updateItem.categoryName,
-        },
+        ...updateItem,
+        category: updateItem.category
+          ? {
+              id: updateItem.category.id,
+              type: updateItem.categoryType,
+              category: updateItem.categoryName,
+            }
+          : null,
       };
       setTransactions((prev) =>
         prev.map((item) => (item.id === completeData.id ? completeData : item)),
