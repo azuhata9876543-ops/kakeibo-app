@@ -142,18 +142,16 @@ function TransactionList({ list = [] }) {
                   <tr
                     key={l.id || `tx-${index}`}
                     className={
-                      l.category && l.category.type === "EXPENSE"
-                        ? "expense-row"
-                        : ""
+                      l.category?.type === "EXPENSE" ? "expense-row" : ""
                     }
                   >
                     <td>{l.date}</td>
                     <td>
-                      {l.category
-                        ? l.category.type === "INCOME"
-                          ? "収入"
-                          : "支出"
-                        : ""}
+                      {l.category?.type === "INCOME"
+                        ? "収入"
+                        : l.category?.type === "EXPENSE"
+                          ? "支出"
+                          : "未分類"}
                     </td>
                     <td>{Number(l.amount).toLocaleString()}円</td>
                     <td>{l.category ? l.category.category : "未分類"}</td>

@@ -185,16 +185,16 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
 
     const hasAnyError = Object.values(errors).some((error) => error !== "");
 
-    let displayValue = editForm[fieldName];
+    let displayValue = editForm[fieldName] || "";
     if (fieldName === "categoryType") {
-      displayValue = editForm.categoryType === "INCOME" ? "収入" : "支出";
+      displayValue = editForm?.categoryType === "INCOME" ? "収入" : "支出";
     }
     if (fieldName === "category") {
-      displayValue = editForm.category ? editForm.category : "未入力";
+      displayValue = editForm?.category ? editForm.category : "未入力";
     }
 
     if (fieldName === "item") {
-      displayValue = editForm.item || "未入力";
+      displayValue = editForm?.item || "未入力";
     }
 
     return (

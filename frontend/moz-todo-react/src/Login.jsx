@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const IS_LOCAL = window.location.hostname === "localhost";
+
 const BASE_HOST = "kakeibo-app-production-0f4c.up.railway.app";
-const API_URL = "https://" + BASE_HOST + "/api/auth";
+const API_URL = IS_LOCAL
+  ? "http://localhost:8080/api/auth"
+  : "https://" + BASE_HOST + "/api/auth";
 
 function Login() {
   const navigate = useNavigate();
