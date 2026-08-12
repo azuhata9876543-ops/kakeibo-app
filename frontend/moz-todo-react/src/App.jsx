@@ -104,8 +104,19 @@ function App() {
     }
   };
 
-  if (!transactions) {
-    return <div>Loading...</div>;
+  if (!Array.isArray(transactions)) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        データを読み込み中、またはデータ構造が不正です...
+      </div>
+    );
   }
 
   return (
