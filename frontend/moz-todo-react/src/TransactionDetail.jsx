@@ -168,10 +168,7 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
 
     onUpdate(updateData);
 
-    setEditForm({
-      ...editForm,
-      amount: Number(editForm.amount),
-    });
+    setEditForm(null);
 
     setIsEdit(null);
   };
