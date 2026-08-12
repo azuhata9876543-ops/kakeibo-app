@@ -204,51 +204,53 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
         )}
         <div className="row-upper">
           <strong>{label}</strong>
-          {isFieldEdit ? (
-            fieldName === "categoryType" ? (
-              <div className="type">
-                <button
-                  type="button"
-                  className={`small-btn income ${editForm.categoryType === "INCOME" ? "active" : ""}`}
-                  onClick={() => handleTypeChange("INCOME")}
+          <div className="value-box">
+            {isFieldEdit ? (
+              fieldName === "categoryType" ? (
+                <div className="type">
+                  <button
+                    type="button"
+                    className={`small-btn income ${editForm.categoryType === "INCOME" ? "active" : ""}`}
+                    onClick={() => handleTypeChange("INCOME")}
+                  >
+                    収入
+                  </button>
+                  <button
+                    type="button"
+                    className={`small-btn expense ${editForm.categoryType === "EXPENSE" ? "active" : ""}`}
+                    onClick={() => handleTypeChange("EXPENSE")}
+                  >
+                    支出
+                  </button>
+                </div>
+              ) : fieldName === "category" ? (
+                <select
+                  name="category"
+                  value={editForm.category || ""}
+                  onChange={handleChange}
                 >
-                  収入
-                </button>
-                <button
-                  type="button"
-                  className={`small-btn expense ${editForm.categoryType === "EXPENSE" ? "active" : ""}`}
-                  onClick={() => handleTypeChange("EXPENSE")}
-                >
-                  支出
-                </button>
-              </div>
-            ) : fieldName === "category" ? (
-              <select
-                name="category"
-                value={editForm.category || ""}
-                onChange={handleChange}
-              >
-                <option value="">カテゴリを選択してください</option>
-                {CATEGORYNAME[editForm.categoryType].map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat}
-                  </option>
-                ))}
-              </select>
+                  <option value="">カテゴリを選択してください</option>
+                  {CATEGORYNAME[editForm.categoryType].map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  type={type}
+                  name={fieldName}
+                  value={editForm[fieldName] || ""}
+                  onChange={handleChange}
+                />
+              )
             ) : (
-              <input
-                type={type}
-                name={fieldName}
-                value={editForm[fieldName] || ""}
-                onChange={handleChange}
-              />
-            )
-          ) : (
-            <div className="text-wrap">
-              {displayValue}
-              {fieldName === "amount" ? "円" : ""}
-            </div>
-          )}
+              <span className="text-wrap">
+                {displayValue}
+                {fieldName === "amount" ? "円" : ""}
+              </span>
+            )}
+          </div>
 
           {isFieldEdit ? (
             <div className="row-lower">
