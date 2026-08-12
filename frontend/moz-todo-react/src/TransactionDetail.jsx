@@ -145,9 +145,12 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
 
     setErrors({ date: "", amount: "", category: "", item: "", memo: "" });
 
+    const userId = localStorage.getItem("userId");
+
     const selectedId = categoryMap[editForm.category] || null;
     const updateData = {
       id: editForm.id,
+      user: { id: userId },
       date: editForm.date,
       memo: editForm.memo,
       item: editForm.item,
