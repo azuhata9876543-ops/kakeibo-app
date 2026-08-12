@@ -10,7 +10,7 @@ import ProtectedRoute from "./ProtectedRoute.jsx";
 import "./App.css";
 
 const BASE_HOST = "kakeibo-app-production-0f4c.up.railway.app";
-const API_URL = "https://" + BASE_HOST + "/api/auth";
+const API_URL = "https://" + BASE_HOST + "/api/transaction";
 
 function App() {
   const [transactions, setTransactions] = useState([]);
