@@ -9,7 +9,8 @@ import Balance from "./Balance.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
 import "./App.css";
 
-const API_URL = "https://kakeibo-app-production-0f4c.up.railway.app";
+const BASE_HOST = "kakeibo-app-production-0f4c.up.railway.app";
+const API_URL = "https://" + BASE_HOST + "/api/auth";
 
 function App() {
   const [transactions, setTransactions] = useState([]);
