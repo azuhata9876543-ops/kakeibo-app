@@ -150,14 +150,14 @@ function TransactionDetail({ list, onUpdate, onDelete }) {
     const selectedId = categoryMap[editForm.category] || null;
     const updateData = {
       id: editForm.id,
-      user: { id: userId },
+      user: { id: Number(userId) },
       date: editForm.date,
       memo: editForm.memo,
       item: editForm.item,
       amount: Number(editForm.amount),
       category: selectedId
         ? {
-            id: selectedId,
+            id: Number(selectedId),
             type: editForm.categoryType,
             category: editForm.category,
           }

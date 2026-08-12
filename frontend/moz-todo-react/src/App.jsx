@@ -73,7 +73,6 @@ function App() {
         body: JSON.stringify(updateItem),
       });
       if (!res.ok) throw new Error("変更に失敗しました");
-      const savedItem = await res.json();
 
       const completeData = {
         ...updateItem,
