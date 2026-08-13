@@ -117,13 +117,7 @@ function TransactionForm({ onCreated }) {
       amount: Number(form.amount),
       memo: form.memo,
       item: form.item,
-      category: selectedId
-        ? {
-            id: Number(selectedId),
-            type: form.categoryType,
-            category: form.category,
-          }
-        : null,
+      category: selectedId ? { id: selectedId } : null,
       categoryName: form.category,
       categoryType: form.categoryType,
     };

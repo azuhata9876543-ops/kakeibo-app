@@ -77,16 +77,15 @@ function App() {
         body: JSON.stringify(updateItem),
       });
       if (!res.ok) throw new Error("変更に失敗しました");
+      const savedItem = await res.json();
 
       const completeData = {
-        ...updateItem,
-        category: updateItem.category
-          ? {
-              id: updateItem.category.id,
-              type: updateItem.categoryType,
-              category: updateItem.categoryName,
-            }
-          : null,
+        ...savedItem,
+        category: {
+          id: savedItem.category ? updateItem.category.id : null,
+          type: updateItem.categoryType,
+          category: updateItem.categoryName,
+        },
       };
       setTransactions((prev) =>
         prev.map((item) => (item.id === completeData.id ? completeData : item)),
@@ -109,19 +108,8 @@ function App() {
     }
   };
 
-  if (!Array.isArray(transactions)) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        データを読み込み中、またはデータ構造が不正です...
-      </div>
-    );
+  if (!transactions) {
+    return <div>Loading...</div>;
   }
 
   return (

@@ -32,7 +32,7 @@ function Login() {
     setLoginError(false);
 
     try {
-      const res = await fetch(`${API_URL}/login`, {
+      const res = await fetch(API_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

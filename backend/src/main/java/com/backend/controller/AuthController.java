@@ -17,8 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin(origins = "${app.cors.allowed-origins}",allowCredentials = "true",
-    allowedHeaders = "*")
-public class AuthController {
+    allowedHeaders = "*")public class AuthController {
 
     private final UserRepository userRepository;
 
