@@ -16,8 +16,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "${app.cors.allowed-origins}",allowCredentials = "true",
-    allowedHeaders = "*")public class AuthController {
+@CrossOrigin(origins = "https://kakeibo-app-gamma-two.vercel.app",allowCredentials = "true",allowedHeaders = "*")
+//@CrossOrigin(origins = "http://localhost:5173",allowCredentials = "true",allowedHeaders = "*")
+    public class AuthController {
+
+    
 
     private final UserRepository userRepository;
 

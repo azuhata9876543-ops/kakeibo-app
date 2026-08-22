@@ -19,7 +19,9 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/transactions")
-@CrossOrigin(origins = "${app.cors.allowed-origins}", allowCredentials = "true")
+@CrossOrigin(origins = "https://kakeibo-app-gamma-two.vercel.app", allowCredentials = "true")
+//@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
+
 public class TransactionController {
     private final TransactionService transactionService;
 
