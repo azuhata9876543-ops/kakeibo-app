@@ -9,12 +9,9 @@ import Balance from "./Balance.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
 import "./App.css";
 
-const IS_LOCAL = window.location.hostname === "localhost";
-
-const BASE_HOST = "kakeibo-app-production-0f4c.up.railway.app";
-const API_URL = IS_LOCAL
-  ? "http://localhost:8080/api/transactions"
-  : "https://" + BASE_HOST + "/api/transactions";
+const API_URL =
+  "https://kakeibo-app-production-0f4c.up.railway.app/api/transactions";
+//const API_URL = "http://localhost:8080/api/transactions";
 
 function App() {
   const [transactions, setTransactions] = useState([]);
